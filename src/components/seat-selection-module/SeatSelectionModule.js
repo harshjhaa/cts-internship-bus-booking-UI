@@ -191,7 +191,7 @@ const SeatSelectionModule = () => {
     }
 
     const removePassenger = (pId) => {
-        const newPassengerList = passengerData.filter((data) => data.passengerId != pId)
+        const newPassengerList = passengerData.filter((data) => data.passengerId !== pId)
         setPassengerData(newPassengerList)
         console.log(passengerData)
     }

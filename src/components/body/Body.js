@@ -13,10 +13,14 @@ const Body = () => {
         <Router>
             <div className="body-contents">
                 <FeatureModule />
-                <FromToDateModule />
-                <SeatSelectionModule />
-                <PaymentModule />
-                <TicketConfirmationModule />
+                <Switch>
+                    <div>
+                        <FromToDateModule />
+                        <SeatSelectionModule />
+                        <PaymentModule />
+                        <TicketConfirmationModule />
+                    </div>
+                </Switch>
             </div >
         </Router>
     );
