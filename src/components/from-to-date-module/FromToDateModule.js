@@ -3,7 +3,7 @@ import './FromToDateModule.css';
 import TripDetailsTableModule from '../trip-details-table-module/TripDetailsTableModule';
 import SeatSelectionModule from '../seat-selection-module/SeatSelectionModule';
 
-const FromToDateModule = () => {
+const FromToDateModule = ({proceedToNextPage}) => {
 
     const [planJourneyClicked, setPlanJourneyClicked] = useState(false);
     const [journeyData, setJourneyData] = useState({});
@@ -26,7 +26,7 @@ const FromToDateModule = () => {
                     journeyDate: journeyDateField.current.value
                 }
                 setJourneyData(journeyD)
-                console.log(journeyData)
+                // console.log(journeyData)
                 tooglePlanJourney(true)
             }
         }
@@ -75,9 +75,9 @@ const FromToDateModule = () => {
 
     return (
         <div style={{ backgroundColor: "whitesmoke" }}>
-            <p style={{marginTop:10, fontSize:40, textAlign: 'center'}}>BOOK <span style={{ color: '#e60505'}}>TICKETS</span>NOW</p>
+            <p style={{ marginTop: 10, fontSize: 40, textAlign: 'center' }}>BOOK <span style={{ color: '#e60505' }}>TICKETS</span>NOW</p>
             {renderFromToDateModule()}
-            <TripDetailsTableModule value={planJourneyClicked} journeyData={journeyData} />
+            <TripDetailsTableModule value={planJourneyClicked} journeyData={journeyData} proceedToNextPage={e=>proceedToNextPage()}/>
             {/* <SeatSelectionModule /> */}
         </div>
     );

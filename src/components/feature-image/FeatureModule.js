@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState,useEffect} from 'react';
+import classnames from 'classnames';
+
 import './FeatureModule.css';
 
-const FeatureModule = () => {
+const FeatureModule = ({ tabNumber }) => {
+
+    const [tab, setTab] = useState();
+
+    useEffect(()=>{
+        setTab(tabNumber)
+    },[tab])
+
+    console.log("New Value")
+    console.log(tab)
+
     return (
         <div>
             <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet" />
@@ -14,16 +26,16 @@ const FeatureModule = () => {
                 <div className="nav-button-containers">
                     <ul className="nav nav-tabs justify-content-center">
                         <li className="nav-item">
-                            <a className="nav-link active" href="#">1. Plan Your Travel</a>
+                            <a className={classnames('nav-link', { active: tab === 1 })} href="#">1. Plan Your Travel</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">2. Select Your Seats</a>
+                            <a className={classnames('nav-link', { active: tab === 2 })} href="#">2. Select Your Seats</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">3. Payments</a>
+                            <a className={classnames('nav-link', { active: tab === 3 })} href="#">3. Payments</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link " href="#">4. Ticket Confirmation</a>
+                            <a className={classnames('nav-link', { active: tab === 4 })} href="#">4. Ticket Confirmation</a>
                         </li>
                     </ul>
                 </div>

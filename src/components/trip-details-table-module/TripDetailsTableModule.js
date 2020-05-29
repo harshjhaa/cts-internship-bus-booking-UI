@@ -1,8 +1,16 @@
 import React from 'react';
 import currency from 'currency-symbol-map'
+import {Link} from 'react-router-dom'
 
 const TripDetailsTableModule = (props) => {
-    console.log(props)
+
+    const proceedNextPage = () => {
+        if(props.proceedToNextPage){
+            props.proceedToNextPage()
+        }
+    }
+
+    // console.log(props)
     const renderTripDetailsTable = (planJourneyClicked, journeyData) => {
         if (planJourneyClicked) {
             // console.log(journeyData);
@@ -31,7 +39,7 @@ const TripDetailsTableModule = (props) => {
                                     <td>{journeyData.journeyDate}</td>
                                     <td>30</td>
                                     <td>{currencySymb}3000</td>
-                                    <td><button className="btn btn-sm btn-danger" type="button" >Proceed</button></td>
+                                    <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link>
                                 </tr>
                             </tbody>
                         </table>

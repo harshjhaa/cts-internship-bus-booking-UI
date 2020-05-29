@@ -14,12 +14,14 @@ const Body = () => {
             <div className="body-contents">
                 <FeatureModule />
                 <Switch>
-                    <div>
-                        <FromToDateModule />
+                    <Router path="/from-date-to-module" component={FromToDateModule} />
+                    <Router path="/seat-selection-to-module" component={SeatSelectionModule} />
+                    <Router path="/payment-module" component={PaymentModule} />
+                    <Router path="/ticket-confirmation-module" component={TicketConfirmationModule} />
+                    {/* <FromToDateModule />
                         <SeatSelectionModule />
                         <PaymentModule />
-                        <TicketConfirmationModule />
-                    </div>
+                        <TicketConfirmationModule /> */}
                 </Switch>
             </div >
         </Router>
