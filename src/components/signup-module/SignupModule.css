@@ -1,0 +1,21 @@
+.image-btn {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.contents {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+.contents form button {
+    background-color: #6400e4;
+    color: #ffffff;
+    height: 50px;
+    width: 100%;
+}
+
+

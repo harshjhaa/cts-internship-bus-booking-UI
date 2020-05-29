@@ -1,0 +1,20 @@
+.container-fluid .payment-form-container {
+    width: 40%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.cancle-button-container {
+    margin-left: 10px;
+}
+
+.form-group-spacing{
+    margin-top: 10px;
+}
+
+.amount-field{
+    width: 40%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}

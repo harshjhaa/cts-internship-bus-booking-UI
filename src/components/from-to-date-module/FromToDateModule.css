@@ -1,0 +1,12 @@
+.from-to-date-content {
+    margin-top: 20px;
+    padding: 10px 100px;
+}
+
+.from-to-date-content label {
+    margin-right:10px;
+}
+
+.from-to-date-content .date-content{
+    padding-top: 5px;
+}

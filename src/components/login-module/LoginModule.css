@@ -1,0 +1,29 @@
+.image-btn {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.contents {
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 76px;
+    padding-top:30px;
+}
+
+.contents form .button-component button {
+    background-color: #FFD700;
+    color: #000000;
+    height: 50px;
+    width: 100%;
+}
+
+.button-component{
+    display: flex;
+    justify-content: space-between;
+}
+
+small{
+    text-align: left;
+}
