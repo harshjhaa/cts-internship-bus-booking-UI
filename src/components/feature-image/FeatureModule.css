@@ -24,26 +24,3 @@
     font-family: 'Raleway', sans-serif;
     font-size:80px
 }
-.previous-button {
-	background-color:#e60505a4;
-	/* border-radius:42px; */
-	display:inline-block;
-	cursor:pointer;
-	font-family:Arial;
-	font-size:20px;
-	padding:8px 20px;
-    text-decoration:none;
-}
-.previous-button:hover {
-	background-color:#e60505;
-}
-.previous-button:active {
-	position:relative;
-	top:1px;
-}
-
-.prev-next-button-container{
-    display: flex;
-    justify-content:space-between;
-    padding: 0 20px;
-}

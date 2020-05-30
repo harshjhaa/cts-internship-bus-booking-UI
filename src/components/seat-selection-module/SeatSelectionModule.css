@@ -17,8 +17,7 @@
     margin-right: "auto";
 }
 
-.content-container .trip-summary-table{
-    padding-left: 100;
-    padding-right: 100;
-    margin-top: 20;
+.trip-summary-table{
+    margin-top:2.5px;
 }
+

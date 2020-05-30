@@ -1,16 +1,28 @@
 import React, { useState, useRef } from 'react';
-import './FromToDateModule.css';
+import LinkButton from '../LinkButton'
 import TripDetailsTableModule from '../trip-details-table-module/TripDetailsTableModule';
-import SeatSelectionModule from '../seat-selection-module/SeatSelectionModule';
+import './FromToDateModule.css';
+import '../global.css'
 
-const FromToDateModule = ({proceedToNextPage}) => {
+const FromToDateModule = ({ proceedToNextPage }) => {
 
     const [planJourneyClicked, setPlanJourneyClicked] = useState(false);
     const [journeyData, setJourneyData] = useState({});
+    const [busData, setBusData] = useState(null);
+    const [enableNextButton, setEnableNextButton] = useState(false);
 
     const departCityField = useRef(null)
     const arrivalCityField = useRef(null)
     const journeyDateField = useRef(null)
+
+    const checkBusSelection = (data) => {
+        if (data !== null) {
+            setBusData(data)
+            setEnableNextButton(true)
+        } else {
+            setEnableNextButton(false)
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -32,6 +44,21 @@ const FromToDateModule = ({proceedToNextPage}) => {
         }
     }
 
+    /*     const handleSubmit = (e) => {
+            e.preventDefault()
+    
+    
+            let journeyD = {
+                departLoc: departCityField.current.value,
+                arriveLoc: arrivalCityField.current.value,
+                journeyDate: journeyDateField.current.value
+            }
+            setJourneyData(journeyD)
+            // console.log(journeyData)
+            tooglePlanJourney(true)
+    
+        } */
+
     const tooglePlanJourney = (toogle) => {
         setPlanJourneyClicked(toogle);
         if (toogle === false) {
@@ -39,6 +66,7 @@ const FromToDateModule = ({proceedToNextPage}) => {
             arrivalCityField.current.value = "Select City"
             journeyDateField.current.value = null;
         }
+        setEnableNextButton(false)
     }
 
     const renderFromToDateModule = () => {
@@ -62,7 +90,7 @@ const FromToDateModule = ({proceedToNextPage}) => {
                         </div>
                     </form>
                     <div className="date-content">
-                        <input id="journey-date" type="date" ref={journeyDateField} required></input>
+                        <input id="journey-date" type="date" ref={journeyDateField} ></input>
                     </div>
                     <div>
                         <button className="btn btn-danger btn-sm" type="submit" >Plan Journey</button>
@@ -74,11 +102,16 @@ const FromToDateModule = ({proceedToNextPage}) => {
     }
 
     return (
-        <div style={{ backgroundColor: "whitesmoke" }}>
-            <p style={{ marginTop: 10, fontSize: 40, textAlign: 'center' }}>BOOK <span style={{ color: '#e60505' }}>TICKETS</span>NOW</p>
-            {renderFromToDateModule()}
-            <TripDetailsTableModule value={planJourneyClicked} journeyData={journeyData} proceedToNextPage={e=>proceedToNextPage()}/>
-            {/* <SeatSelectionModule /> */}
+        <div>
+            <div className="prev-next-container">
+                <LinkButton disabled>Previous Page</LinkButton>
+                <p style={{ textSize: "50px" }}>BOOK <span style={{ color: '#e60505' }}>TICKETS</span>NOW</p>
+                <LinkButton to='/seat-selection-module' disabled={enableNextButton ? false : true}>Next Page</LinkButton>
+            </div>
+            <div style={{ backgroundColor: "whitesmoke" }}>
+                {renderFromToDateModule()}
+            </div>
+            <TripDetailsTableModule value={planJourneyClicked} journeyData={journeyData} receiveData={data => checkBusSelection(data)} />
         </div>
     );
 };

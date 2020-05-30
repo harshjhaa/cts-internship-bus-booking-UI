@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import LinkButton from '../LinkButton'
 import './SeatSelectionModule.css'
 
 const SeatSelectionModule = () => {
@@ -7,9 +8,11 @@ const SeatSelectionModule = () => {
 
     const passengerName = useRef(null)
     const passengerAge = useRef(null)
+    const passengerGenderFemale = useRef(null)
+    const passengerGenderMale = useRef(null)
 
     const [passengerData, setPassengerData] = useState([])
-    const [maxPassengers, setMaxPassengers] = useState()
+    const [enableNextButton, setEnableNextButton] = useState(false);
 
     const [seats, setSeats] = useState([
         false,
@@ -108,7 +111,7 @@ const SeatSelectionModule = () => {
 
     const renderTripSummaryTabel = () => {
         return (
-            <div>
+            <div className="trip-summary-table">
                 <table className="table table-sm table-bordered">
                     <tbody>
                         <tr className="table-danger">
@@ -146,20 +149,19 @@ const SeatSelectionModule = () => {
         //         setTotalPassengers(totalPassengers)
         //     }
         // }
-        if (maxPassengers === 4) {
-            alert("Only 5 tickets can be booked at a time")
-        } else {
-            let passengerDetails = {
-                passengerName: passengerName.current.value,
-                passengerAge: passengerAge.current.value,
-                passengerGender: gender,
-                passengerId: passengerName.current.value + "-" + passengerAge.current.value + "-" + passengerAge.current.value
-            }
-            setPassengerData(passengerData.concat(passengerDetails))
-            passengerName.current.value = null;
-            passengerAge.current.value = null;
+        let passengerDetails = {
+            passengerName: passengerName.current.value,
+            passengerAge: passengerAge.current.value,
+            passengerGender: gender,
+            passengerId: passengerName.current.value + "-" + passengerAge.current.value + "-" + passengerAge.current.value
         }
-        setMaxPassengers(passengerData.length)
+        // setPassengerData({passengerData:passengerData.concat(passengerDetails)})
+        setPassengerData(passengerData.concat(passengerDetails))
+        console.log(passengerData)
+        passengerName.current.value = null;
+        passengerAge.current.value = null;
+        passengerGenderFemale.current.checked = false;
+        passengerGenderMale.current.checked = false;
     }
 
     const fetchPassengerDetailsForm = () => {
@@ -168,22 +170,22 @@ const SeatSelectionModule = () => {
                 <form onSubmit={e => { fetchPassengerData(e) }}>
                     <div className="row">
                         <div className="col-sm">
-                            <input type="text" ref={passengerName} class="form-control form-control-sm" placeholder="Enter Name" />
+                            <input type="text" ref={passengerName} class="form-control form-control-sm" placeholder="Enter Name" required />
                         </div>
                         <div className="col-sm">
-                            <input type="number" ref={passengerAge} class="form-control form-control-sm" placeholder="Enter Age" />
+                            <input type="number" ref={passengerAge} class="form-control form-control-sm" placeholder="Enter Age" required />
                         </div>
                         <div className="col-sm">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" onClick={() => setGender('Male')} type="radio" name="gender" value="Male" />
+                                <input class="form-check-input" ref={passengerGenderMale} onClick={() => setGender('Male')} type="radio" name="gender" value="Male" required />
                                 <label class="form-check-label" for="inlineRadio1">Male</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" onClick={() => setGender('Female')} type="radio" name="gender" value="Female" />
+                                <input class="form-check-input" ref={passengerGenderFemale} onClick={() => setGender('Female')} type="radio" name="gender" value="Female" required />
                                 <label class="form-check-label" for="inlineRadio1">Female</label>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-sm btn-danger">Add Passenger</button>
+                        <button type="submit" class="btn btn-sm btn-danger" disabled={passengerData.length === 4 ? true : false}>Add Passenger</button>
                     </div>
                 </form>
             </div>
@@ -196,10 +198,11 @@ const SeatSelectionModule = () => {
         console.log(passengerData)
     }
 
+    console.log(passengerData)
     const addPassengerToTable = () => {
-        return passengerData.map((data) => {
+        return passengerData.map((data, index) => {
             return (
-                <tr>
+                <tr key={index} className={passengerData.length === 4 ? 'table-danger' : ''}>
                     <td>{data.passengerName}</td>
                     <td>{data.passengerGender}</td>
                     <td>{data.passengerAge}</td>
@@ -230,23 +233,27 @@ const SeatSelectionModule = () => {
     }
 
     return (
-        <div className="content-container">
-            <div className="container trip-summary-table" style={{ "padding-left": 100, "padding-right": 100, marginTop: 20 }}>
+        <div>
+            <div className="prev-next-container">
+                <LinkButton to='/from-date-to-module'>Previous Page</LinkButton>
                 {renderTripSummaryTabel()}
+                <LinkButton to='/payment-module' disabled={passengerData.length === 0 ? true : false}>Next Page</LinkButton>
             </div>
-            <div className="container-fluid seat-passenger-details-fetcher" style={{ marginTop: 30, width: "90%", marginLeft: "auto", marginRight: "auto" }}>
-                <div className="row">
-                    <div className="col col-4">
-                        <div>
-                            {setSeatsData()}
+            <div className="content-container">
+                <div className="container-fluid seat-passenger-details-fetcher" style={{ marginTop: 30, width: "90%", marginLeft: "auto", marginRight: "auto" }}>
+                    <div className="row">
+                        <div className="col col-4">
+                            <div>
+                                {setSeatsData()}
+                            </div>
                         </div>
-                    </div>
-                    <div className="col col-8">
-                        <div>
-                            {/* <h4 style={{ textAlign: 'center' }}>Passenger Details</h4> */}
-                            {fetchPassengerDetailsForm()}
-                            <br />
-                            {renderPassengerNameGenderTabel()}
+                        <div className="col col-8">
+                            <div>
+                                {/* <h4 style={{ textAlign: 'center' }}>Passenger Details</h4> */}
+                                {fetchPassengerDetailsForm()}
+                                <br />
+                                {renderPassengerNameGenderTabel()}
+                            </div>
                         </div>
                     </div>
                 </div>

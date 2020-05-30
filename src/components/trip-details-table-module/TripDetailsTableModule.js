@@ -1,24 +1,23 @@
 import React from 'react';
 import currency from 'currency-symbol-map'
-import {Link} from 'react-router-dom'
+import LinkButton from '../LinkButton'
+import "./TripDetailsTableModule.css"
 
 const TripDetailsTableModule = (props) => {
 
-    const proceedNextPage = () => {
-        if(props.proceedToNextPage){
-            props.proceedToNextPage()
+    const sendData = (jData) => {
+        if(props.receiveData){
+            props.receiveData(jData)
         }
     }
 
-    // console.log(props)
     const renderTripDetailsTable = (planJourneyClicked, journeyData) => {
         if (planJourneyClicked) {
-            // console.log(journeyData);
             const currencySymb = currency("INR")
             return (
-                <div style={{ backgroundColor: "whitesmoke" }}>
+                <div className="trip-details-table">
                     <div className="card card-body">
-                        <table className="table">
+                        <table className="table table-sm">
                             <thead className="thead-dark">
                                 <tr>
                                     <th>Bus Type</th>
@@ -27,7 +26,7 @@ const TripDetailsTableModule = (props) => {
                                     <th>Date</th>
                                     <th>Seats Available</th>
                                     <th>Fare</th>
-                                    <th>Proceed</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,7 +38,28 @@ const TripDetailsTableModule = (props) => {
                                     <td>{journeyData.journeyDate}</td>
                                     <td>30</td>
                                     <td>{currencySymb}3000</td>
-                                    <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link>
+                                    {/* <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link> */}
+                                    <input class="form-check-input" onClick={e => { sendData(journeyData.departLoc+"-"+journeyData.arriveLoc+"-"+30+"-"+3000) }} type="radio" name="selected-bus" />
+                                </tr>
+                                <tr>
+                                    <td>Volvo-AC</td>
+                                    <td>{journeyData.departLoc}</td>
+                                    <td>{journeyData.arriveLoc}</td>
+                                    <td>{journeyData.journeyDate}</td>
+                                    <td>30</td>
+                                    <td>{currencySymb}3000</td>
+                                    {/* <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link> */}
+                                    <input class="form-check-input" onClick={e => { sendData(journeyData.departLoc+"-"+journeyData.arriveLoc+"-"+30+"-"+3000) }} type="radio" name="selected-bus" />
+                                </tr>
+                                <tr>
+                                    <td>Volvo-AC</td>
+                                    <td>{journeyData.departLoc}</td>
+                                    <td>{journeyData.arriveLoc}</td>
+                                    <td>{journeyData.journeyDate}</td>
+                                    <td>30</td>
+                                    <td>{currencySymb}3000</td>
+                                    {/* <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link> */}
+                                    <input class="form-check-input" onClick={e => { sendData(journeyData.departLoc+"-"+journeyData.arriveLoc+"-"+30+"-"+3000) }} type="radio" name="selected-bus" />
                                 </tr>
                             </tbody>
                         </table>

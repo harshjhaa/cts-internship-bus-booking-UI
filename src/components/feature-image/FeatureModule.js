@@ -19,10 +19,6 @@ const FeatureModule = ({ tabNumber }) => {
             <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap" rel="stylesheet" />
             <div className="image-container" style={{ backgroundImage: "url('./images/f-img-1.jpg')" }} >
                 <h1>Bus World</h1>
-                <div className="prev-next-button-container">
-                    <a className="previous-button">Previous Page</a>
-                    <a className="previous-button">Next Page</a>
-                </div>
                 <div className="nav-button-containers">
                     <ul className="nav nav-tabs justify-content-center">
                         <li className="nav-item">
