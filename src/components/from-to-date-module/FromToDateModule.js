@@ -14,23 +14,25 @@ const FromToDateModule = ({ proceedToNextPage, getSelectedBusId }) => {
     //to store the bus details received from server
     const [busDataFromServer, setBusDataFromServer] = useState([])
 
-    const handleJourneyFieldEvent = (e, field) => {
-        let fieldValue = e.target.value
-        setBusJourneyData({ ...busJourneyData, [field]: fieldValue })
-    }
-
+    //to store the boolean value to enable the next button only if user selected any bus
     const [planJourneyClicked, setPlanJourneyClicked] = useState(false);
 
     //used to store the bus-id selected by the customer
     const [selectedBusId, setSelectedBusId] = useState(null);
 
+    //to store the boolean value to check weather plan journey button is clicked or not
     const [enableNextButton, setEnableNextButton] = useState(false);
 
     const departCityField = useRef(null)
     const arrivalCityField = useRef(null)
     const journeyDateField = useRef(null)
 
-    if(getSelectedBusId){
+    const handleJourneyFieldEvent = (e, field) => {
+        let fieldValue = e.target.value
+        setBusJourneyData({ ...busJourneyData, [field]: fieldValue })
+    }
+
+    if (getSelectedBusId) {
         getSelectedBusId(selectedBusId)
     }
 

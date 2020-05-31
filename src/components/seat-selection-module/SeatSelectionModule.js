@@ -1,12 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import currency from 'currency-symbol-map'
 import LinkButton from '../LinkButton'
+import * as busDetailsApi from '../api/BusDetailsApi'
 import './SeatSelectionModule.css'
 
 const SeatSelectionModule = ({ busId }) => {
 
     let gender;
-
-    console.log(busId)
 
     const passengerName = useRef(null)
     const passengerAge = useRef(null)
@@ -14,101 +14,40 @@ const SeatSelectionModule = ({ busId }) => {
     const passengerGenderMale = useRef(null)
 
     const [passengerData, setPassengerData] = useState([])
-    const [enableNextButton, setEnableNextButton] = useState(false);
 
-    const [seats, setSeats] = useState([
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-    ]);
+    const [busIdObj] = useState({ "busId": busId })
 
-    const handleSeatSelectEvent = (value, seatNo) => {
-        setSeats(seats[seatNo] = value);
-    }
+    const [busDataFromServer, setBusDataFromServer] = useState([])
 
-    const setSeatsData = () => {
-        // let seatsArray = []
-        // for (let i = 0; i < 40; i++) {
-        //     for (let j = 1; j <= 10; j++) {
-        //         if (seats[i] === false) {
-        //             seatsArray.push(
-        //                 <span key={i} className={styles.unbookedseats}>
-        //                     <i onClick={e => { handleSeatSelectEvent(true, i) }} className='fa fa-bus' key={i} style={{ "margin-right": 15, cursor: 'pointer' }}></i>
-        //                 </span>
-        //             )
-        //         } else {
-        //             seatsArray.push(
-        //                 <span style={{ cursor: 'pointer' }} key={i} className={styles.bookedseats}>
-        //                     <i onClick={e => { handleSeatSelectEvent(false, i) }} className='fa fa-bus' key={i} key={i} style={{ "margin-right": 15, cursor: 'pointer' }}></i>
-        //                 </span>
-        //             )
-        //         }
-        //         if (j % 10 === 0) {
-        //             break;
-        //         }
-        //         i++;
-        //     }
-        //     seatsArray.push(<br />)
-        // }
-        let seatsArray = []
-        for (let i = 0; i < 40; i++) {
-            if (seats[i] === false) {
-                seatsArray.push(
-                    <span key={i} className="unbookedseats">
-                        <i onClick={e => { handleSeatSelectEvent(true, i) }} className='fa fa-bus' key={i} style={{ "margin-right": 15, cursor: 'pointer' }}></i>
-                    </span>
-                )
-            } else {
-                seatsArray.push(
-                    <span style={{ cursor: 'pointer' }} key={i} className="bookedseats">
-                        <i onClick={e => { handleSeatSelectEvent(false, i) }} className='fa fa-bus' key={i} key={i} style={{ "margin-right": 15, cursor: 'pointer' }}></i>
-                    </span>
-                )
-            }
-        }
-        // seatsArray.push(<br />)
-        return seatsArray
-    }
+    useEffect(() => {
+        busDetailsApi.findBusDetailsById(busIdObj)
+            .then(response => response.data)
+            .then(data => {
+                console.log("Data from mongoDB SeatSelectionModule")
+                console.log(data)
+                setBusDataFromServer(data)
+            })
+    }, [])
 
     const setGender = (genderParameter) => {
         gender = genderParameter
+    }
+
+    const renderTripSummaryTableRow = () => {
+        const currencySymb = currency("INR")
+        return busDataFromServer.map((data, index) => {
+            return (
+                <tr key={index} className="table-danger">
+                    <td>Bus Type: {data.busType}</td>
+                    <td>From: {data.departLoc}</td>
+                    <td>Departure {data.departTime}</td>
+                    <td>To: {data.arriveLoc}</td>
+                    <td>Arrival Time: {data.arriveTime}</td>
+                    <td>Date: {data.departDate}</td>
+                    <td>Fare: {currencySymb}{data.fare}</td>
+                </tr>
+            )
+        })
     }
 
     const renderTripSummaryTabel = () => {
@@ -116,14 +55,7 @@ const SeatSelectionModule = ({ busId }) => {
             <div className="trip-summary-table">
                 <table className="table table-sm table-bordered">
                     <tbody>
-                        <tr className="table-danger">
-                            <td>Bus Type: Volvo-AC</td>
-                            <td>From: Bengluru</td>
-                            <td>Departure Time: 15:00</td>
-                            <td>To: Chennai</td>
-                            <td>Arrival Time: 21:00</td>
-                            <td>Date: 2020/05/29</td>
-                        </tr>
+                        {renderTripSummaryTableRow()}
                     </tbody>
                 </table>
             </div>
@@ -246,7 +178,7 @@ const SeatSelectionModule = ({ busId }) => {
                     <div className="row">
                         <div className="col col-4">
                             <div>
-                                {setSeatsData()}
+                                {/* {setSeatsData()} */}
                             </div>
                         </div>
                         <div className="col col-8">
