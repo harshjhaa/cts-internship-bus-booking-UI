@@ -2,9 +2,11 @@ import React, { useState, useRef } from 'react';
 import LinkButton from '../LinkButton'
 import './SeatSelectionModule.css'
 
-const SeatSelectionModule = () => {
+const SeatSelectionModule = ({ busId }) => {
 
     let gender;
+
+    console.log(busId)
 
     const passengerName = useRef(null)
     const passengerAge = useRef(null)
@@ -198,7 +200,7 @@ const SeatSelectionModule = () => {
         console.log(passengerData)
     }
 
-    console.log(passengerData)
+    // console.log(passengerData)
     const addPassengerToTable = () => {
         return passengerData.map((data, index) => {
             return (

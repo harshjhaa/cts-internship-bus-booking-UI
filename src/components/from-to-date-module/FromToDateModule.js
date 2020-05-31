@@ -4,20 +4,40 @@ import TripDetailsTableModule from '../trip-details-table-module/TripDetailsTabl
 import './FromToDateModule.css';
 import '../global.css'
 
-const FromToDateModule = ({ proceedToNextPage }) => {
+import * as busDetailsApi from '../api/BusDetailsApi'
+
+const FromToDateModule = ({ proceedToNextPage, getSelectedBusId }) => {
+
+    //to store the bus details enterd by customer
+    const [busJourneyData, setBusJourneyData] = useState({})
+
+    //to store the bus details received from server
+    const [busDataFromServer, setBusDataFromServer] = useState([])
+
+    const handleJourneyFieldEvent = (e, field) => {
+        let fieldValue = e.target.value
+        setBusJourneyData({ ...busJourneyData, [field]: fieldValue })
+    }
 
     const [planJourneyClicked, setPlanJourneyClicked] = useState(false);
-    const [journeyData, setJourneyData] = useState({});
-    const [busData, setBusData] = useState(null);
+
+    //used to store the bus-id selected by the customer
+    const [selectedBusId, setSelectedBusId] = useState(null);
+
     const [enableNextButton, setEnableNextButton] = useState(false);
 
     const departCityField = useRef(null)
     const arrivalCityField = useRef(null)
     const journeyDateField = useRef(null)
 
-    const checkBusSelection = (data) => {
-        if (data !== null) {
-            setBusData(data)
+    if(getSelectedBusId){
+        getSelectedBusId(selectedBusId)
+    }
+
+    const checkBusSelection = (selectedBusID) => {
+        if (selectedBusID !== null) {
+            console.log(selectedBusID)
+            setSelectedBusId(selectedBusID)
             setEnableNextButton(true)
         } else {
             setEnableNextButton(false)
@@ -32,32 +52,25 @@ const FromToDateModule = ({ proceedToNextPage }) => {
             if (departCityField.current.value === arrivalCityField.current.value) {
                 alert("Departure City and Arrival City can't be same!")
             } else {
-                let journeyD = {
-                    departLoc: departCityField.current.value,
-                    arriveLoc: arrivalCityField.current.value,
-                    journeyDate: journeyDateField.current.value
-                }
-                setJourneyData(journeyD)
-                // console.log(journeyData)
+                // busDetailsApi.findAllBusses()
+                //     .then(response => response.data)
+                //     .then(data => {
+                //         console.log("Data from mongoDB")
+                //         console.log(data)
+                //     })
+
+                busDetailsApi.findBusses(busJourneyData)
+                    .then(response => response.data)
+                    .then(data => {
+                        console.log("Data from mongoDB")
+                        console.log(data)
+                        setBusDataFromServer(data)
+                    })
+
                 tooglePlanJourney(true)
             }
         }
     }
-
-    /*     const handleSubmit = (e) => {
-            e.preventDefault()
-    
-    
-            let journeyD = {
-                departLoc: departCityField.current.value,
-                arriveLoc: arrivalCityField.current.value,
-                journeyDate: journeyDateField.current.value
-            }
-            setJourneyData(journeyD)
-            // console.log(journeyData)
-            tooglePlanJourney(true)
-    
-        } */
 
     const tooglePlanJourney = (toogle) => {
         setPlanJourneyClicked(toogle);
@@ -73,24 +86,26 @@ const FromToDateModule = ({ proceedToNextPage }) => {
         return (
             <div >
                 <form className="from-to-date-content d-flex justify-content-around" onSubmit={e => handleSubmit(e)}>
-                    <form className="form-inline">
+                    <div className="form-inline">
                         <div className="form-group">
                             <label><b>From</b></label>
-                            <select ref={departCityField} className="form-control">
+                            <select ref={departCityField} className="form-control" onChange={e => handleJourneyFieldEvent(e, 'departLoc')}>
                                 {["Select City", "Bengluru", "Chennai", "Hyderabad"].map(n => <option value={n} key={n}>{n}</option>)}
                             </select>
+                            {/* <input type="text" maxlength="30" ref={departCityField} onChange={e => handleJourneyFieldEvent(e, 'departLoc')} className="form-control" name="departLoc" /> */}
                         </div>
-                    </form>
-                    <form className="form-inline">
+                    </div>
+                    <div className="form-inline">
                         <div className="form-group">
                             <label><b>To</b></label>
-                            <select ref={arrivalCityField} className="form-control">
+                            <select ref={arrivalCityField} className="form-control" onChange={e => handleJourneyFieldEvent(e, 'arriveLoc')}>
                                 {["Select City", "Bengluru", "Chennai", "Hyderabad"].map(n => <option value={n} key={n}>{n}</option>)}
                             </select>
+                            {/* <input type="text" maxlength="30" ref={arrivalCityField} onChange={e => handleJourneyFieldEvent(e, 'arriveLoc')} className="form-control" name="arriveLoc" /> */}
                         </div>
-                    </form>
+                    </div>
                     <div className="date-content">
-                        <input id="journey-date" type="date" ref={journeyDateField} ></input>
+                        <input id="journey-date" type="date" ref={journeyDateField} onChange={e => handleJourneyFieldEvent(e, 'departDate')} ></input>
                     </div>
                     <div>
                         <button className="btn btn-danger btn-sm" type="submit" >Plan Journey</button>
@@ -111,7 +126,7 @@ const FromToDateModule = ({ proceedToNextPage }) => {
             <div style={{ backgroundColor: "whitesmoke" }}>
                 {renderFromToDateModule()}
             </div>
-            <TripDetailsTableModule value={planJourneyClicked} journeyData={journeyData} receiveData={data => checkBusSelection(data)} />
+            <TripDetailsTableModule planJourneyClicked={planJourneyClicked} journeyData={busDataFromServer} receiveData={selectedBusID => checkBusSelection(selectedBusID)} />
         </div>
     );
 };

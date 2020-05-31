@@ -16,14 +16,18 @@ import TicketConfirmationModule from './components/ticket-confirmation-module/Ti
 
 function App() {
 
-  const [newTab, setNewTab] = useState(1)
+  // const [newTab, setNewTab] = useState(1)
 
-  function proceed(tabNo) {
-    setNewTab(tabNo)
-    console.log("Clicked")
-    console.log(tabNo)
-    console.log(newTab)
-    
+  // function proceed(tabNo) {
+  //   setNewTab(tabNo)
+  //   console.log("Clicked")
+  //   console.log(tabNo)
+  //   console.log(newTab)
+  // }
+
+  const [selectedBusId, setSelectedBusId] = useState(null)
+  const handleSelectedBusId = (id) => {
+    setSelectedBusId(id)
   }
 
   return (
@@ -32,10 +36,12 @@ function App() {
         <Navbar />
         {/* <Body /> */}
         <div className="body-contents">
-          <FeatureModule tabNumber={newTab} />
+          <FeatureModule /* tabNumber={newTab} */ />
           <Switch>
-            <Route path="/from-date-to-module" render={props => <FromToDateModule {...props} proceedToNextPage={e => proceed(2)} />} />
-            <Route path="/seat-selection-module" component={SeatSelectionModule} />
+            <Route path="/from-date-to-module"
+              render={props => <FromToDateModule {...props} getSelectedBusId={data => handleSelectedBusId(data)} /* proceedToNextPage={e => proceed(2)} */ />} />
+            <Route path="/seat-selection-module" /* component={SeatSelectionModule}  */
+              render={props => <SeatSelectionModule {...props} busId={selectedBusId === null ? null : selectedBusId} /* busId={data => handleSelectedBusId(data)} */ />} />
             <Route path="/payment-module" component={PaymentModule} />
             <Route path="/ticket-confirmation-module" component={TicketConfirmationModule} />
           </Switch>

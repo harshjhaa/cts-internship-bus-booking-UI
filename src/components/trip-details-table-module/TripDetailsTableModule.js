@@ -3,17 +3,34 @@ import currency from 'currency-symbol-map'
 import LinkButton from '../LinkButton'
 import "./TripDetailsTableModule.css"
 
-const TripDetailsTableModule = (props) => {
+const TripDetailsTableModule = ({ planJourneyClicked, journeyData, receiveData }) => {
 
     const sendData = (jData) => {
-        if(props.receiveData){
-            props.receiveData(jData)
+        if (receiveData) {
+            receiveData(jData)
         }
     }
+    console.log(journeyData)
+    const renderJourneyDetailsInTable = () => {
+        const currencySymb = currency("INR")
+        return journeyData.map((data, index) => {
+             return (
+                 <tr key={index}>
+                     <td>{data.busType}</td>
+                     <td>{data.departLoc}</td>
+                     <td>{data.arriveLoc}</td>
+                     <td>{data.departDate}</td>
+                     <td>{data.seatsAvailable}</td>
+                     <td>{currencySymb}{data.fare}</td>
+                     <input class="form-check-input" onClick={e => { sendData(data.busId) }} type="radio" name="selected-bus" />
+                 </tr>
+             )
+         })
+         
+    }
 
-    const renderTripDetailsTable = (planJourneyClicked, journeyData) => {
+    const renderTripDetailsTable = (planJourneyClicked) => {
         if (planJourneyClicked) {
-            const currencySymb = currency("INR")
             return (
                 <div className="trip-details-table">
                     <div className="card card-body">
@@ -30,37 +47,7 @@ const TripDetailsTableModule = (props) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* {renderJourneyDetailsInTable()} */}
-                                <tr>
-                                    <td>Volvo-AC</td>
-                                    <td>{journeyData.departLoc}</td>
-                                    <td>{journeyData.arriveLoc}</td>
-                                    <td>{journeyData.journeyDate}</td>
-                                    <td>30</td>
-                                    <td>{currencySymb}3000</td>
-                                    {/* <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link> */}
-                                    <input class="form-check-input" onClick={e => { sendData(journeyData.departLoc+"-"+journeyData.arriveLoc+"-"+30+"-"+3000) }} type="radio" name="selected-bus" />
-                                </tr>
-                                <tr>
-                                    <td>Volvo-AC</td>
-                                    <td>{journeyData.departLoc}</td>
-                                    <td>{journeyData.arriveLoc}</td>
-                                    <td>{journeyData.journeyDate}</td>
-                                    <td>30</td>
-                                    <td>{currencySymb}3000</td>
-                                    {/* <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link> */}
-                                    <input class="form-check-input" onClick={e => { sendData(journeyData.departLoc+"-"+journeyData.arriveLoc+"-"+30+"-"+3000) }} type="radio" name="selected-bus" />
-                                </tr>
-                                <tr>
-                                    <td>Volvo-AC</td>
-                                    <td>{journeyData.departLoc}</td>
-                                    <td>{journeyData.arriveLoc}</td>
-                                    <td>{journeyData.journeyDate}</td>
-                                    <td>30</td>
-                                    <td>{currencySymb}3000</td>
-                                    {/* <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link> */}
-                                    <input class="form-check-input" onClick={e => { sendData(journeyData.departLoc+"-"+journeyData.arriveLoc+"-"+30+"-"+3000) }} type="radio" name="selected-bus" />
-                                </tr>
+                                {renderJourneyDetailsInTable()}
                             </tbody>
                         </table>
                     </div>
@@ -71,9 +58,10 @@ const TripDetailsTableModule = (props) => {
 
     return (
         <div>
-            {renderTripDetailsTable(props.value, props.journeyData)}
+            {renderTripDetailsTable(planJourneyClicked)}
         </div>
     );
 };
 
 export default TripDetailsTableModule;
+{/* <Link to="/seat-selection-module"><td><button className="btn btn-sm btn-danger" onClick={e => { proceedNextPage() }} type="button" >Proceed</button></td></Link> */ }
