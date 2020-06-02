@@ -10,23 +10,26 @@ const TripDetailsTableModule = ({ planJourneyClicked, journeyData, receiveData }
             receiveData(jData)
         }
     }
-    console.log(journeyData)
+    // console.log(journeyData)
     const renderJourneyDetailsInTable = () => {
-        const currencySymb = currency("INR")
-        return journeyData.map((data, index) => {
-             return (
-                 <tr key={index}>
-                     <td>{data.busType}</td>
-                     <td>{data.departLoc}</td>
-                     <td>{data.arriveLoc}</td>
-                     <td>{data.departDate}</td>
-                     <td>{data.seatsAvailable}</td>
-                     <td>{currencySymb}{data.fare}</td>
-                     <input class="form-check-input" onClick={e => { sendData(data.busId) }} type="radio" name="selected-bus" />
-                 </tr>
-             )
-         })
-         
+        if (!journeyData) {
+            alert("No bus found for the given date")
+        } else {
+            const currencySymb = currency("INR")
+            return journeyData.map((data, index) => {
+                return (
+                    <tr key={index}>
+                        <td>{data.busType}</td>
+                        <td>{data.departLoc}</td>
+                        <td>{data.arriveLoc}</td>
+                        <td>{data.departDate}</td>
+                        <td>{data.seatsAvailable}</td>
+                        <td>{currencySymb}{data.fare}</td>
+                        <input class="form-check-input" onClick={e => { sendData(data.busId) }} type="radio" name="selected-bus" />
+                    </tr>
+                )
+            })
+        }
     }
 
     const renderTripDetailsTable = (planJourneyClicked) => {

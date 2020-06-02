@@ -7,7 +7,9 @@ export function findAllBusses() {
 
 export function findBusses(journeyData) {
     let apiUrl = 'http://localhost:8080/bus/bus-details/loc'
-    return axios.post(apiUrl, journeyData)
+    return axios.post(apiUrl, journeyData,{
+        headers: { 'Content-Type': 'application/json'}
+    })
 }
 
 export function findBusDetailsById(busId){

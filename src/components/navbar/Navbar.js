@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import React from 'react';
 import './Navbar.css';
 
@@ -7,13 +8,13 @@ const Navbar = () => {
             <nav className="navbar navbar-expand-lg fixed-top">
                 <img className="navbar-brand" src="./images/bus-logo-6.png" height="100%" width="100" />
                 <button className="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{color:"#ffffff"}}>
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{ color: "#ffffff" }}>
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <a className="nav-link" style={{ color: "whitesmoke" }} href="#">Home</a>
+                            <Link to="/from-date-to-module"><a className="nav-link" style={{ color: "whitesmoke" }}>Home</a></Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" style={{ color: "whitesmoke" }} href="#">My Bookings</a>

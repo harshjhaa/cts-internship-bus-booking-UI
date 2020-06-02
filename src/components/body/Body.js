@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import LoginModule from '../login-module/LoginModule';
 import FromToDateModule from '../from-to-date-module/FromToDateModule';
-import FeatureModule from '../feature-image/FeatureModule';
+import FeatureModule from '../feature-module/FeatureModule';
 import SeatSelectionModule from '../seat-selection-module/SeatSelectionModule';
 import PaymentModule from '../payment-module/PaymentModule';
 import TicketConfirmationModule from '../ticket-confirmation-module/TicketConfirmationModule';

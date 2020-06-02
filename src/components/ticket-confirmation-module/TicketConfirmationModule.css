@@ -8,7 +8,6 @@
 .card-header-container-ticket-confirmation{
     display: flex;
     justify-content:space-between;
-    cursor: pointer;
 }
 
 .card-header-container-ticket-confirmation-download{

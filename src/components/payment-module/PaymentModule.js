@@ -1,11 +1,25 @@
 import { Link } from 'react-router-dom'
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import LinkButton from '../LinkButton'
+import * as passengerDetailsApi from '../api/PassengerDetailsApi'
+import * as bookingHistoryApi from '../api/BookingHistoryApi'
+
 import "./PaymentModule.css"
 
-const PaymentModule = () => {
+const PaymentModule = ({ passengersData, selectedBusId, receiveTransactionId }) => {
 
     const [paymentDetails, setPaymentDetails] = useState([])
+
+    const [bookingHistoryDetails, setBookingHistoryDetails] = useState({})
+
+    useEffect(() => {
+        bookingHistoryApi.createBookingHistory(bookingHistoryDetails)
+            .then(response => response.data)
+            .then(data => {
+                console.log("Booking history created successfully")
+                console.log(data)
+            })
+    }, [bookingHistoryDetails])
 
     const cardNumberField = useRef(null)
     const nameOnCardField = useRef(null)
@@ -13,27 +27,67 @@ const PaymentModule = () => {
     const expiryMonthField = useRef(null)
     const expiryYearField = useRef(null)
 
-    const handlePaymentFormSubmit = () => {
+    console.log("selectedBusId direct")
+    console.log(selectedBusId)
+
+    const handlePaymentFormSubmit = (selectedBusId) => {
+
+        console.log("selectedBusId direct-inside")
+        console.log(selectedBusId)
+
         let paymentData = {
             cardNumber: cardNumberField.current.value,
             nameOnCard: nameOnCardField.current.value,
             expiryMonth: expiryMonthField.current.value,
             expiryYear: expiryYearField.current.value,
             cvv: cvvField.current.value,
-
         }
+
+        let currentdate = new Date();
+        let transactionId = (currentdate.getDate()).toString()
+            + (currentdate.getMonth() + 1).toString()
+            + (currentdate.getFullYear()).toString()
+            + (currentdate.getHours()).toString()
+            + (currentdate.getMinutes()).toString()
+
+        passengersData.map((data) => {
+            data["transactionId"] = transactionId;
+        })
+
+        console.log("selectedBusId direct inside-again!!!!!!!!!")
+        console.log(selectedBusId)
+
+        let busAndTransactionId = {
+            busId: selectedBusId,
+            transactionId: transactionId,
+            passengerCount: passengersData.length,
+        }
+
+        setBookingHistoryDetails(busAndTransactionId)
+
+        if (receiveTransactionId) {
+            receiveTransactionId(transactionId)
+        }
+
+        //saving passenger details to database
+        passengerDetailsApi.addPassengersDetails(passengersData)
+            .then(response => response.data)
+            .then(data => {
+                console.log("Passengers Data from mongoDB")
+                console.log(data)
+            })
         setPaymentDetails(paymentData)
     }
 
     const handlePaymentFormReset = () => {
-        // cardNumberField.current.value = null
-        // nameOnCardField.current.value = null
-        // expiryMonthField.current.value = "01"
-        // expiryYearField.current.value = null
-        // cvvField.current.value = null
+        cardNumberField.current.value = null
+        nameOnCardField.current.value = null
+        expiryMonthField.current.value = "01"
+        expiryYearField.current.value = null
+        cvvField.current.value = null
     }
 
-    const renderPaymentForm = () => {
+    const renderPaymentForm = (selectedBusId) => {
         return (
             <div className="container-fluid">
                 <div className="payment-form-container">
@@ -80,7 +134,7 @@ const PaymentModule = () => {
                             </div>
                         </div>
                         <div className="form-group-spacing reset-cancle-button-container">
-                            <button type="button" onClick={e => handlePaymentFormSubmit()} className="btn btn-success " disabled={paymentDetails.length === 0 ? false : true}>Pay</button>
+                            <button type="button" onClick={e => handlePaymentFormSubmit(selectedBusId)} className="btn btn-success " disabled={paymentDetails.length === 0 ? false : true}>Pay</button>
                             <button type="button" onClick={e => handlePaymentFormReset()} className="btn btn-warning " disabled={paymentDetails.length === 0 ? false : true}>Reset</button>
                             <Link to="/seat-selection-module"><button type="button" className="btn  btn-danger " disabled={paymentDetails.length === 0 ? false : true}>Cancle & Go Back</button></Link>
                         </div>
@@ -112,7 +166,7 @@ const PaymentModule = () => {
                 {renderAmountField()}
                 <LinkButton disabled={paymentDetails.length === 0 ? true : false} to='/ticket-confirmation-module'>Next Page</LinkButton>
             </div>
-            {renderPaymentForm()}
+            {renderPaymentForm(selectedBusId)}
         </div>
     );
 };

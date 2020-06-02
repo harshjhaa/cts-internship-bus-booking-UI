@@ -11,8 +11,8 @@ const FeatureModule = ({ tabNumber }) => {
         setTab(tabNumber)
     },[tab])
 
-    console.log("New Value")
-    console.log(tab)
+    // console.log("New Value")
+    // console.log(tab)
 
     return (
         <div>
